@@ -410,19 +410,21 @@ class SubMateri(db.Model):
     nama = db.Column(db.String(100))
     keterangan = db.Column(db.String(100))
     url = db.Column(db.String(100))
+    format = db.Column(db.String(100))
 
-    def __init__(self, id_gaya_belajar, id_materi, nama, keterangan, url):
+    def __init__(self, id_gaya_belajar, id_materi, nama, keterangan, url, format):
         self.id_gaya_belajar = id_gaya_belajar
         self.id_materi = id_materi
         self.nama = nama
         self.keterangan = keterangan
         self.url = url
+        self.format = format
 
 
 # Sub Materi Schema
 class SubMateriSchema(ma.Schema):
     class Meta:
-        fields = ('id', 'id_gaya_belajar', 'id_materi', 'nama', 'keterangan', 'url')
+        fields = ('id', 'id_gaya_belajar', 'id_materi', 'nama', 'keterangan', 'url', 'format')
 
 sub_materi_schema = SubMateriSchema()
 sub_materies_schema = SubMateriSchema(many=True)
@@ -466,8 +468,9 @@ def add_sub_materi():
     nama = request.json['nama'] 
     keterangan = request.json['keterangan'] 
     url = request.json['url'] 
+    format = request.json['format']
 
-    new_sub_materi = SubMateri(id_gaya_belajar, id_materi, nama, keterangan, url)
+    new_sub_materi = SubMateri(id_gaya_belajar, id_materi, nama, keterangan, url, format_file)
     db.session.add(new_sub_materi)
     db.session.commit()
 
@@ -492,6 +495,7 @@ def edit_sub_materi(id):
     sub_materi.nama = request.json['nama']
     sub_materi.keterangan = request.json['keterangan']
     sub_materi.url = request.json['url']
+    sub_materi.format = request.json['format']
 
     db.session.commit()
 
